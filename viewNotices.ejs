@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices and Announcements</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+
+    <% if (navPartial === 'navforadmin.ejs') { %>
+        <link rel="stylesheet" href="/admincss.css">
+    <% } else { %>
+        <link rel="stylesheet" href="/studentadmin.css">
+    <% } %>
+
+    <style>
+        /* Your inline styles */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(0,0,0,.125);
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .notice-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #343a40;
+            margin-bottom: 5px;
+        }
+        .notice-content {
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.6;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+        }
+        .notice-date {
+            font-size: 0.85rem;
+            color: #6c757d;
+            text-align: right;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+        .no-notices {
+            text-align: center;
+            color: #6c757d;
+            font-size: 1.1rem;
+            padding: 40px;
+        }
+        .add-notice-btn-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        /* Styles for action buttons */
+        .notice-actions {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+        }
+        .notice-actions .btn {
+            padding: .25rem .5rem;
+            font-size: .875rem;
+            line-height: 1.5;
+            border-radius: .2rem;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1 class="mb-4 text-center">Notices and Announcements</h1>
+
+        <% if (message) { %>
+            <div class="alert alert-success mt-3"><%= message %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-danger mt-3"><%= error %></div>
+        <% } %>
+
+        <% if (navPartial === 'navforadmin.ejs') { %>
+            <div class="add-notice-btn-container">
+                <a href="/admin/notices/add" class="btn btn-success">➕ Add New Notice</a>
+            </div>
+        <% } %>
+
+        <% if (notices && notices.length > 0) { %>
+            <% notices.forEach(notice => { %>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="notice-title"><%= notice.title %></span>
+                        <% if (navPartial === 'navforadmin.ejs') { %>
+                            <div class="notice-actions">
+                                <a href="/admin/notices/edit/<%= notice.nid %>" class="btn btn-info btn-sm">Edit</a>
+                                <form action="/admin/notices/delete/<%= notice.nid %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this notice?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <p class="notice-content"><%= notice.content %></p>
+                        <div class="notice-date">Published: <%= new Date(notice.publish_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></div>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="card">
+                <div class="card-body no-notices">
+                    <p>No notices have been published yet.</p>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="d-flex justify-content-end mt-4 mb-3">
+            <% if (navPartial === 'navforadmin.ejs') { %>
+                <a href="/adminHome" class="btn btn-primary mr-2">📊 Go to Dashboard</a> 
+                <a href="/logout" class="btn btn-danger">🔒 Logout</a>
+            <% } else { %>
+                <a href="/studentDash" class="btn btn-primary mr-2">📊 Go to Dashboard</a>
+                <a href="/studentlogout" class="btn btn-danger">🔒 Logout</a>
+            <% } %>
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

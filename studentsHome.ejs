@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/mngstud.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/adminHome">🏠 Dashboard</a>
+        
+        <div class="admin-dropdown">
+            <a href="#" class="admin-dropbtn">👨‍🎓 Student Management ▼</a>
+            <div class="admin-dropdown-content">
+                <a href="/admin/addstudent">➕ Add Student</a>
+                <a href="/admin/viewstudents">📋 View All Students</a>
+            </div>
+        </div>
+        
+        <div class="admin-dropdown">
+            <a href="#" class="admin-dropbtn">📝 Exam & Subject Management ▼</a>
+            <div class="admin-dropdown-content">
+                <a href="/admin/exams/view">📄 Manage Exams</a>
+                <a href="/admin/questions/view">❓ Manage Questions</a>
+                <a href="/admin/subjects/view">📖 Manage Subjects</a> 
+                <a href="/admin/schedule/add">📅 Schedule New Exam</a> <a href="/admin/schedule/view">🗓️ View Exam Schedules</a> </div>
+        </div>
+        <div class="admin-dropdown">
+            <a href="#" class="admin-dropbtn">📊 Results ▼</a>
+            <div class="admin-dropdown-content">
+                <a href="/admin/results">📈 Performance Tracking</a>
+            </div>
+        </div>
+
+        <div class="admin-dropdown">
+            <a href="#" class="admin-dropbtn">📢 Notices ▼</a>
+            <div class="admin-dropdown-content">
+                <a href="/admin/notices/add">Add Notice</a>
+                <a href="/admin/notices/view">View Notices</a>
+            </div>
+        </div>
+        
+        <a href="/admin/users">🔐 Reset Password</a>
+
+        <a href="/logout" class="logout-link">🔒 Logout</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.admin-dropdown');
+
+            dropdowns.forEach(dropdown => {
+                const dropbtn = dropdown.querySelector('.admin-dropbtn');
+                dropbtn.addEventListener('click', function(event) {
+                    event.preventDefault(); // Stop the default link behavior
+                    event.stopPropagation(); // Stop event from bubbling up to document click listener
+
+                    // Close other open dropdowns
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown && otherDropdown.classList.contains('open')) {
+                            otherDropdown.classList.remove('open');
+                        }
+                    });
+
+                    // Toggle the 'open' class on the clicked dropdown
+                    dropdown.classList.toggle('open');
+                });
+            });
+
+            // Close dropdowns when clicking anywhere else on the document
+            document.addEventListener('click', function(event) {
+                dropdowns.forEach(dropdown => {
+                    if (dropdown.classList.contains('open') && !dropdown.contains(event.target)) {
+                        dropdown.classList.remove('open');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

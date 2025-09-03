@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Exam Schedules</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admincss.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 900px; margin-top: 50px; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        h1 { color: #007bff; margin-bottom: 30px; }
+        .table thead th { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; border-color: #28a745; }
+        .btn-info { background-color: #17a2b8; border-color: #17a2b8; }
+        .btn-danger { background-color: #dc3545; border-color: #dc3545; }
+        .btn-secondary { background-color: #6c757d; border-color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Manage Exam Schedules</h1>
+
+        <% if (message) { %>
+            <div class="alert alert-success"><%= message %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a href="/admin/schedule/add" class="btn btn-success mr-2">➕ Schedule New Exam</a>
+            <a href="/adminHome" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+
+        <% if (schedules && schedules.length > 0) { %>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Exam Name</th>
+                        <th>Subject Name</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% schedules.forEach(schedule => { %>
+                        <tr>
+                            <td><%= schedule.schid %></td>
+                            <td><%= schedule.examname %></td>
+                            <td><%= schedule.subjectname %></td>
+                            <td><%= new Date(schedule.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                            <td><%= schedule.starttime %></td>
+                            <td><%= schedule.endtime %></td>
+                            <td>
+                                <a href="/admin/schedule/edit/<%= schedule.schid %>" class="btn btn-info btn-sm mr-2">Edit</a>
+                                <form action="/admin/schedule/delete/<%= schedule.schid %>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this schedule?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="alert alert-info text-center">No exam schedules found.</div>
+        <% } %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

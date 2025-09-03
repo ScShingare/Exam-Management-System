@@ -1,0 +1,14 @@
+<div class="student-sidebar">
+    <% if (typeof studentName !== 'undefined' && studentName) { %>
+        <h2>Welcome, <%= studentName %>!</h2>
+    <% } else { %>
+        <h2>Student Panel</h2> <% } %>
+
+    <a href="/studentDash">🏠 Dashboard</a>
+    <a href="/student/profile">👤 My Profile</a>
+    <a href="/student/enroll-exams">📝 Enroll/Join Exam</a>
+    <a href="/student/my-exams">📚 My Exams/Courses</a>
+    <a href="/student/results">📊 Results / Scorecard</a>
+    <a href="/student/notices">📢 Notices / Announcements</a>
+    <a href="/studentlogout">🚪 Logout</a>
+</div>

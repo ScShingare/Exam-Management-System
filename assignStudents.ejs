@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Assign Students to Subjects</title>
+    <link rel="stylesheet" href="/mngstud.css">
+    <style>
+        /* Basic styling to make the form look decent, you can integrate this into mngstud.css */
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't expand the element */
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/adminHome">🏠Dashboard</a>
+        <a href="/admin/subjects/add">Add New Subject</a>
+        <a href="/admin/subjects/view">📋 View All Subjects</a>
+        <a href="/admin/assign-students">🔍 👥 Assign to Students</a> <a href="/logout" class="logout-link">🔒 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>Assign Students to Subjects</h1>
+
+        <% if (message) { %>
+            <div class="alert alert-success mt-3"><%= message %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-danger mt-3"><%= error %></div>
+        <% } %>
+
+        <p>Use the form below to assign a student to a specific subject.</p>
+
+        <form action="/admin/assign-students" method="POST">
+    <div class="form-group">
+        <label for="studentId">Select Student:</label>
+        <select id="studentId" name="studentId" required>
+            <option value="">-- Select a Student --</option>
+            <% if (students && students.length > 0) { %>
+                <% students.forEach(student => { %>
+                    <option value="<%= student.stid %>"><%= student.name %> (<%= student.email %>)</option>
+                <% }); %>
+            <% } else { %>
+                <option value="" disabled>No students available</option>
+            <% } %>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="subjectId">Select Subject:</label>
+        <select id="subjectId" name="subjectId" required>
+            <option value="">-- Select a Subject --</option>
+            <% if (subjects && subjects.length > 0) { %>
+                <% subjects.forEach(subject => { %>
+                    <option value="<%= subject.subid %>"><%= subject.subjectname %></option>
+                <% }); %>
+            <% } else { %>
+                <option value="" disabled>No subjects available</option>
+            <% } %>
+        </select>
+    </div>
+
+    <button type="submit">Assign Student to Subject</button>
+</form>
+    </div>
+</body>
+</html>

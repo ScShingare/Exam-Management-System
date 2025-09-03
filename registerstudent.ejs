@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="/css/style.css"> 
+    <style>
+        /* Basic styling for validation messages */
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block; /* Make sure it takes its own line */
+        }
+        .success-message {
+            color: green;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+        p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Registration</h2>
+
+        <% if (message) { %>
+            <p class="success-message"><%= message %></p>
+        <% } %>
+        <% if (error) { %>
+            <p class="error-message"><%= error %></p>
+        <% } %>
+
+        <form action="/registerstudent" method="POST" id="studentRegistrationForm">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+                <span class="error-message" id="nameError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error-message" id="usernameError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="contact">Mobile No (10 digits):</label>
+                <input type="tel" id="contact" name="contact" pattern="[0-9]{10}" title="Please enter exactly 10 digits" required>
+                <span class="error-message" id="contactError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required minlength="6">
+                <span class="error-message" id="passwordError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <span class="error-message" id="confirmPasswordError"></span>
+            </div>
+
+            <button type="submit">Register</button>
+            <p>Already have an account? <a href="/studentlogin">Login here</a></p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('studentRegistrationForm');
+            const nameInput = document.getElementById('name');
+            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const contactInput = document.getElementById('contact');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+
+            const nameError = document.getElementById('nameError');
+            const usernameError = document.getElementById('usernameError');
+            const emailError = document.getElementById('emailError');
+            const contactError = document.getElementById('contactError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+            // Function to clear all inline error messages
+            const clearErrors = () => {
+                nameError.textContent = '';
+                usernameError.textContent = '';
+                emailError.textContent = '';
+                contactError.textContent = '';
+                passwordError.textContent = '';
+                confirmPasswordError.textContent = '';
+            };
+
+            form.addEventListener('submit', (event) => {
+                clearErrors(); // Clear previous client-side errors on submit attempt
+                let isValid = true;
+
+                // --- Client-side validation checks ---
+
+                // Full Name validation
+                if (!nameInput.value.trim()) {
+                    nameError.textContent = 'Full Name is required.';
+                    isValid = false;
+                }
+
+                // Username validation
+                if (!usernameInput.value.trim()) {
+                    usernameError.textContent = 'Username is required.';
+                    isValid = false;
+                }
+
+                // Email validation
+                if (!emailInput.value.trim()) {
+                    emailError.textContent = 'Email is required.';
+                    isValid = false;
+                } else if (!emailInput.validity.valid) { // Check HTML5 email type validity
+                    emailError.textContent = 'Please enter a valid email address (e.g., user@example.com).';
+                    isValid = false;
+                }
+                
+                // Mobile Number validation (10 digits)
+                if (!contactInput.value.trim()) {
+                    contactError.textContent = 'Mobile Number is required.';
+                    isValid = false;
+                } else if (!contactInput.validity.valid) { // Check HTML5 pattern validity
+                    contactError.textContent = 'Please enter exactly 10 digits for the mobile number (e.g., 9876543210).';
+                    isValid = false;
+                }
+
+                // Password validation (minlength)
+                if (!passwordInput.value) {
+                    passwordError.textContent = 'Password is required.';
+                    isValid = false;
+                } else if (passwordInput.value.length < 6) {
+                    passwordError.textContent = 'Password must be at least 6 characters long.';
+                    isValid = false;
+                }
+
+                // Confirm Password validation (match)
+                if (confirmPasswordInput.value !== passwordInput.value) {
+                    confirmPasswordError.textContent = 'Passwords do not match.';
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    event.preventDefault(); // Stop form submission if client-side validation fails
+                }
+            });
+
+            // --- Optional: Real-time validation as user types for better UX ---
+            
+            // Real-time email validation
+            emailInput.addEventListener('input', () => {
+                if (emailInput.validity.valid) {
+                    emailError.textContent = ''; // Clear error if valid
+                } else if (emailInput.value.trim() === '') {
+                    emailError.textContent = 'Email is required.';
+                } else {
+                    emailError.textContent = 'Please enter a valid email address.';
+                }
+            });
+
+            // Real-time contact validation
+            contactInput.addEventListener('input', () => {
+                if (contactInput.validity.valid) {
+                    contactError.textContent = ''; // Clear error if valid
+                } else if (contactInput.value.trim() === '') {
+                    contactError.textContent = 'Mobile Number is required.';
+                } else {
+                    contactError.textContent = 'Please enter exactly 10 digits for the mobile number.';
+                }
+            });
+
+            // Real-time password match validation
+            confirmPasswordInput.addEventListener('input', () => {
+                if (confirmPasswordInput.value === passwordInput.value) {
+                    confirmPasswordError.textContent = ''; // Clear error if match
+                } else {
+                    confirmPasswordError.textContent = 'Passwords do not match.';
+                }
+            });
+
+            // Real-time password length validation
+            passwordInput.addEventListener('input', () => {
+                if (passwordInput.value.length >= 6) {
+                    passwordError.textContent = '';
+                } else if (passwordInput.value.trim() === '') {
+                    passwordError.textContent = 'Password is required.';
+                } else {
+                    passwordError.textContent = 'Password must be at least 6 characters long.';
+                }
+            });
+            // Clear name error on input
+            nameInput.addEventListener('input', () => {
+                if (nameInput.value.trim() !== '') {
+                    nameError.textContent = '';
+                }
+            });
+
+            // Clear username error on input
+            usernameInput.addEventListener('input', () => {
+                if (usernameInput.value.trim() !== '') {
+                    usernameError.textContent = '';
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

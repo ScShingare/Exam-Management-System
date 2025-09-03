@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        /* Your existing styles (moved and slightly refined) */
+        #adminName,
+        #adminemail,
+        #usernameInput,
+        #contactInput,
+        #adminpassword {
+            width: 400px; /* Applied to all input fields */
+        }
+        /* New styles for layout */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            margin: 0;
+            background-color: #f4f6f9; /* Light background for consistency */
+        }
+        .main-content-wrapper {
+            flex-grow: 1; /* Allows this content to expand and fill available space */
+            padding: 20px 0; /* Add top/bottom padding */
+        }
+        .form-section {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            margin-top: 20px; /* Space below the container's top padding */
+        }
+        /* Responsive adjustments for input width on smaller screens */
+        @media (max-width: 768px) {
+            #adminName,
+            #adminemail,
+            #usernameInput,
+            #contactInput,
+            #adminpassword {
+                width: 100%; /* Full width on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+     <%- include('studentsHome.ejs') %>
+
+    <div class="main-content-wrapper">
+        <div class="container">
+            <h1 class="mb-4">Add New Student</h1>
+            <div class="form-section">
+                <form action="/admin/addstudent" method="post">
+    <div class="form-group">
+        <label for="adminName">Enter Full Name</label>
+        <input type="text" name="name" class="form-control" id="adminName" required>
+    </div>
+    <div class="form-group">
+        <label for="adminemail">Enter Email address</label>
+        <input type="email" name="email" class="form-control" id="adminemail" aria-describedby="emailHelp" required>
+    </div>
+
+    <div class="form-group">
+        <label for="usernameInput">Enter Username</label>
+        <input type="text" name="username" class="form-control" id="usernameInput" required>
+    </div>
+
+    <div class="form-group">
+        <label for="contactInput">Enter Contact Number</label>
+        <input type="text" name="contact" class="form-control" id="contactInput" required>
+    </div>
+
+    <div class="form-group">
+        <label for="adminpassword">Enter Password</label>
+        <input type="password" name="password" class="form-control" id="adminpassword" required>
+    </div>
+    <div class="form-group">
+        <label for="confirmPasswordInput">Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control" id="confirmPasswordInput" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    <% if (message) { %>
+        <div class="alert alert-success mt-3"><%= message %></div>
+    <% } %>
+
+    <% if (error) { %>
+        <div class="alert alert-danger mt-3"><%= error %></div>
+    <% } %>
+</form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
